@@ -1,7 +1,8 @@
 #define RAYGUI_IMPLEMENTATION
+#include "Gui.hpp"
+
 #include <raygui.h>
 
-#include "Gui.hpp"
 #include "defines.hpp"
 
 void Gui::drawGui()

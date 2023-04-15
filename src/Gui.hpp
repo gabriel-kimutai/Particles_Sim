@@ -1,4 +1,3 @@
-#pragma once
 #include <raylib.h>
 
 class Gui {
@@ -7,5 +6,6 @@ class Gui {
     int height;
     Vector2 position;
     Rectangle guiContainer;
+
     void drawGui();
 };
