@@ -1,5 +1,3 @@
-#define RAYGUI_IMPLEMENTATION
-#include <raygui.h>
 #include <raylib.h>
 #include <stdio.h>
 
@@ -8,6 +6,7 @@
 #include <vector>
 
 #include "Particles.hpp"
+#include "Gui.hpp"
 #include "defines.hpp"
 
 int main(int argc, char *argv[])
@@ -22,15 +21,20 @@ int main(int argc, char *argv[])
     Particle point;
     point.createParticles();
 
+    Gui gui;
+    gui.width = 200;
+    gui.height = SCREEN_HEIGHT;
+    gui.position = (Vector2){(float)SCREEN_WIDTH - gui.width, 0};
+
     Rectangle box = {GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f,
                      (float)GetScreenWidth(), 20};
+    float minDistance = 40;
 
     while (!WindowShouldClose()) {
         ClearBackground(BLACK);
         BeginDrawing();
         // Draw GUI
-        GuiPanel(box, "TESTING");
-
+        gui.drawGui();
         DrawText(TextFormat("FPS: %d", GetFPS()), 10, 10, 12, WHITE);
         DrawText(TextFormat("Particles: %d", point.particles.size()), 15,
                  SCREEN_HEIGHT - 10, 12, WHITE);
@@ -57,7 +61,7 @@ int main(int argc, char *argv[])
                               point.particles[i].position.y;
                 float distance =
                     std::sqrt(std::pow(distX, 2) + std::pow(distY, 2));
-                if (distance <= 50 && distance != 0) {
+                if (distance <= minDistance && distance != 0) {
                     DrawLineV(point.particles[i].position,
                               point.particles[j].position, PURPLE);
                 }
@@ -71,7 +75,7 @@ int main(int argc, char *argv[])
                        distance); */
             }
         }
-        printf("Number of particles: %d \n", (int)point.particles.size());
+        // printf("Number of particles: %d \n", (int)point.particles.size());
         EndDrawing();
     }
     UnloadFont(Iosevka);
