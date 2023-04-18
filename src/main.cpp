@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "Gui.hpp"
-#include "Particles.hpp"
+#include "Node.hpp"
 #include "defines.hpp"
 
 int main(int argc, char *argv[])
@@ -26,26 +26,22 @@ int main(int argc, char *argv[])
 
     Rectangle box = {GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f,
                      (float)GetScreenWidth(), 20};
-    Particle node;
-    node.minDistance = 40;
+    Node node;
+    node.minDistance = 60;
+    node.init(20);
 
     while (!WindowShouldClose()) {
-        ClearBackground(BLACK);
+        ClearBackground(RAYWHITE);
         BeginDrawing();
 
         // Draw GUI
         gui.drawGui();
         DrawText(TextFormat("FPS: %d", GetFPS()), 10, 10, 12, WHITE);
-        DrawText(TextFormat("Particles: %d", node.particles.size()), 15,
-                 SCREEN_HEIGHT - 10, 12, WHITE);
-        node.drawParticles(false);
-        node.drawConnectors();
-        if (IsKeyPressed(KEY_A)) {
-            node.addParticles(10);
-        }
-        if (IsKeyPressed(KEY_R)) {
-            node.removeParticles();
-        }
+        DrawText(TextFormat("Particles: %d", node.nodes.size()), 15,
+                 SCREEN_HEIGHT - 10, 12, PURPLE);
+        node.draw();
+        node.addNodes();
+        node.update();
         EndDrawing();
     }
     CloseWindow();

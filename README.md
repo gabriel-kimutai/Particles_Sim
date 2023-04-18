@@ -2,8 +2,8 @@
  *Some random project for learning animation and collisions*
 
 ## Todo
-- Create additional attributes for the particles 
-  - **Tribes**
+- ~~Create additional attributes for the particles~~
+  - **Race**
     - represented as different colors
     - Flock together (boids?)
     - Cohesion
