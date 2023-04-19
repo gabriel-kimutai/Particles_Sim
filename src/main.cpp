@@ -28,10 +28,10 @@ int main(int argc, char *argv[])
                      (float)GetScreenWidth(), 20};
     Node node;
     node.minDistance = 60;
-    node.init(20);
+    node.init(100);
 
     while (!WindowShouldClose()) {
-        ClearBackground(RAYWHITE);
+        ClearBackground(BG);
         BeginDrawing();
 
         // Draw GUI

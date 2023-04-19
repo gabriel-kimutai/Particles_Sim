@@ -22,36 +22,44 @@ Font Iosevka;
 void move(std::vector<Node>* v_nodes)
 {
     for (int i = 0; i < v_nodes->size(); i++) {
-        v_nodes->data()[i].position.x +=
-            v_nodes->data()[i].velocity.x * GetFrameTime();
-        v_nodes->data()[i].position.y +=
-            v_nodes->data()[i].velocity.y * GetFrameTime();
+        v_nodes->data()[i].position.x += v_nodes->data()[i].velocity.x * GetFrameTime();
+        v_nodes->data()[i].position.y += v_nodes->data()[i].velocity.y * GetFrameTime();
     }
 }
 
 static void createNodes(int particleNum, std::vector<Node>* v_nodes)
 {
+    int red = 0;
+    int purple = 0;
+    int green = 0;
+
     for (int i = 0; i < particleNum; i++) {
         Node particle;
 
-        particle.position =
-            (Vector2){(float)GetRandomValue(0, renderBox.width),
-                      (float)GetRandomValue(0, renderBox.height)};
-        particle.velocity = (Vector2){(float)GetRandomValue(-200, 200),
-                                      (float)GetRandomValue(-200, 200)};
+        particle.position = (Vector2){(float)GetRandomValue(10, renderBox.width - 10),
+                                      (float)GetRandomValue(10, renderBox.height - 10)};
+        particle.velocity = (Vector2){(float)GetRandomValue(-200, 200), (float)GetRandomValue(-200, 200)};
 
-        particle.radius = 6;
+        particle.radius = GetRandomValue(3, 5);
 
-        if (i % 2 == 0) {
-            particle.race = GREEN;
+        if (i % 5 == 0) {
+            particle.race = M_GREEN;
+            green += 1;
         }
-        else {
+        if (i % 2 == 0) {
+            particle.race = M_PURPLE;
+            purple += 1;
+        }
+        if (i % 3 == 0) {
             particle.race = RED;
+            red += 1;
         }
 
         v_nodes->push_back(particle);
     }
-    printf("v_size: %lu\n", v_nodes->size());
+    printf("green: %i\n", green);
+    printf("purple: %i\n", purple);
+    printf("red: %i\n", red);
 }
 
 static void wallCollision(std::vector<Node>& v_nodes)
@@ -83,7 +91,7 @@ void drawConnectors(std::vector<Node>& v_nodes)
             float distY = v_nodes[j].position.y - v_nodes[i].position.y;
             float distance = std::sqrt(std::pow(distX, 2) + std::pow(distY, 2));
             if (distance <= 60 && v_nodes[i].race.r == v_nodes[j].race.r) {
-                DrawLineV(v_nodes[i].position, v_nodes[j].position, PURPLE);
+                DrawLineEx(v_nodes[i].position, v_nodes[j].position, 2, v_nodes[i].race);
             }
             // printf("distance between p[%i] and p[%i]: %f\n", i, j,
             //        distance);
@@ -118,7 +126,7 @@ void drawConnectors(std::vector<Node>& v_nodes)
 
 void Node::init(int numberOfNodes)
 {
-    std::thread create(createNodes, 10, &nodes);
+    std::thread create(createNodes, numberOfNodes, &nodes);
     create.join();
     printf("r_size: %lu\n", nodes.size());
 }
